@@ -1,0 +1,5 @@
+# 部署前把 https://caishuifashenxhb.github.io/caishuifashenxiaohuoban 替换为真实域名（Sitemap 指令要求绝对 URL）
+User-agent: *
+Allow: /
+
+Sitemap: https://caishuifashenxhb.github.io/caishuifashenxiaohuoban/sitemap.xml

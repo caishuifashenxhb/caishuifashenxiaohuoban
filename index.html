@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  上线交付说明（部署前请替换下列占位项）
+  1. 真实域名：把 https://caishuifashenxhb.github.io/caishuifashenxiaohuoban 替换为你的域名
+     （canonical / og:url / og:image / sitemap.xml / robots.txt）。
+  2. 联系表单：把表单占位符替换为真实 Formspree 表单 ID
+     （CONTACT_ENDPOINT 常量与 <form action="..."> 两处）。
+  3. 微信 / LinkedIn：暂无真实地址，页脚已改为不可点击 <span>；
+     取得链接后改回 <a href="..."> 并去掉 is-static 类。
+  4. 如需国内加速：删除本文件 3 个 Google Fonts <link>，
+     直接使用 CSS 内已补全的中文系统字体栈。
+  5. og:image 依「相对路径」约束使用 assets/profile.jpg；
+     微信 / Facebook 抓取端通常要求绝对 URL，替换域名后建议
+     改为 https://<真实域名>/assets/profile.jpg。
+  6. 全部资源均为相对路径，可部署在仓库根目录或任意子目录。
+  ============================================================
+-->
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>何文辉 | 财税审计专业人士</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1a365d;
+            --color-secondary: #2d3748;
+            --color-accent: #c9a227;
+            --color-hero-mid: #365985;
+            --color-accent-light: #d4af37;
+            --color-bg: #fafbfc;
+            --color-bg-alt: #f1f5f9;
+            --color-text: #1a202c;
+            --color-text-secondary: #718096;
+            --color-border: #e2e8f0;
+            --color-white: #ffffff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --transition-fast: 200ms ease;
+            --transition-normal: 300ms ease;
+            --transition-slow: 600ms ease-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all var(--transition-normal);
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            padding: 12px 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .nav.scrolled .nav-logo {
+            color: var(--color-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            padding: 4px 0;
+            transition: color var(--transition-fast);
+        }
+
+        .nav.scrolled .nav-link {
+            color: var(--color-secondary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            transition: width var(--transition-fast);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--color-white);
+        }
+
+        .nav.scrolled .nav-menu-btn {
+            color: var(--color-secondary);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-primary);
+            z-index: 999;
+            padding: 100px 24px 40px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-menu-link {
+            display: block;
+            color: var(--color-white);
+            text-decoration: none;
+            font-size: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: color var(--transition-fast);
+        }
+
+        .mobile-menu-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-hero-mid, #2c5282) 50%, var(--color-secondary) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(201, 162, 39, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(201, 162, 39, 0.08) 0%, transparent 50%);
+        }
+
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 0 24px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--color-accent);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+        }
+
+        .hero-title {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        .hero-desc {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: var(--color-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201, 162, 39, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-white);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: var(--color-accent);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--color-white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+        }
+
+        .about-image {
+            width: 100%;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .about-image-decoration {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--color-accent);
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        .about-content {
+            padding-right: 40px;
+        }
+
+        .about-text {
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Services Section */
+        .services {
+            background: var(--color-bg-alt);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--color-white);
+            padding: 40px 32px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all var(--transition-normal);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--color-accent);
+            transform: scaleY(0);
+            transition: transform var(--transition-normal);
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-border);
+        }
+
+        .service-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+        }
+
+        .service-title {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+        }
+
+        .service-desc {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Articles Section */
+        .articles {
+            background: var(--color-white);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .article-card {
+            background: var(--color-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform var(--transition-normal);
+        }
+
+        .article-card:hover .article-image {
+            transform: scale(1.05);
+        }
+
+        .article-image-wrapper {
+            overflow: hidden;
+        }
+
+        .article-content {
+            padding: 24px;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: var(--color-primary);
+            color: var(--color-white);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .article-title {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .article-excerpt {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .articles-more {
+            text-align: center;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            background: var(--color-bg-alt);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--color-accent), var(--color-primary));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 48px;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+
+        .timeline-content {
+            background: var(--color-white);
+            padding: 28px 32px;
+            border-radius: 8px;
+            max-width: 360px;
+            position: relative;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            border-left: none;
+            border-right: 4px solid var(--color-accent);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 28px;
+            width: 16px;
+            height: 16px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            border: 4px solid var(--color-bg-alt);
+            z-index: 1;
+            transition: all var(--transition-fast);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: translateX(-50%) scale(1.3);
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2);
+        }
+
+        .timeline-year {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        .timeline-company {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--color-white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+        }
+
+        .contact-info {
+            padding-right: 40px;
+        }
+
+        .contact-title {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 24px;
+        }
+
+        .contact-desc {
+            color: var(--color-text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-bg-alt);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary);
+            flex-shrink: 0;
+        }
+
+        .contact-item-title {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 4px;
+        }
+
+        .contact-item-value {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        .contact-form {
+            background: var(--color-bg);
+            padding: 40px;
+            border-radius: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--color-text);
+            background: var(--color-white);
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--color-primary);
+            padding: 60px 0 30px;
+            color: var(--color-white);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social-link {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            transition: all var(--transition-fast);
+        }
+
+        .footer-social-link:hover {
+            background: var(--color-accent);
+            color: var(--color-primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--transition-slow);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-delay-1 { transition-delay: 100ms; }
+        .fade-in-delay-2 { transition-delay: 200ms; }
+        .fade-in-delay-3 { transition-delay: 300ms; }
+        .fade-in-delay-4 { transition-delay: 400ms; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .about-content {
+                padding-right: 0;
+                order: -1;
+            }
+
+            .contact-info {
+                padding-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-menu-btn {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                padding-left: 50px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                max-width: 100%;
+                border-left: 4px solid var(--color-accent);
+                border-right: none;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+        }
+    </style>
+    <style>
+        /* 资质标签 */
+        .cred-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 26px; }
+        .cred-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--color-bg-alt); color: var(--color-primary); border: 1px solid var(--color-border); padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+        .cred-chip svg { width: 15px; height: 15px; }
+        /* 代表项目表格 */
+        .projects-table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: 12px; box-shadow: var(--shadow-sm); background: var(--color-white); }
+        .projects-table { width: 100%; border-collapse: collapse; min-width: 880px; font-size: 14.5px; }
+        .projects-table thead th { background: var(--color-primary); color: #fff; text-align: left; padding: 14px 16px; font-weight: 600; white-space: nowrap; }
+        .projects-table tbody td { padding: 13px 16px; border-top: 1px solid var(--color-border); color: var(--color-text); vertical-align: top; line-height: 1.7; }
+        .projects-table tbody tr:nth-child(even) { background: var(--color-bg-alt); }
+        .projects-table .col-idx { width: 46px; text-align: center; color: var(--color-text-secondary); font-weight: 600; }
+        .projects-table .col-role { white-space: nowrap; color: var(--color-primary); font-weight: 500; }
+        .projects-table tbody tr:hover { background: #eef2f7; }
+    </style>
+
+<style id="site-extra">
+.animate-spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+
+    <!-- 占位域名 https://caishuifashenxhb.github.io/caishuifashenxiaohuoban：部署前替换为真实域名 -->
+    <meta name="description" content="何文辉，注册会计师 / 税务师 / 律师，14 年财税审计从业经验，现任中审众环会计师事务所贵州分所项目经理，专注上市公司年报审计、国有企业专项审计与财政绩效评价。">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="何文辉 | 财税审计专业人士">
+    <meta property="og:description" content="注册会计师 / 税务师 / 律师，14 年财税审计，中审众环会计师事务所贵州分所项目经理。">
+    <meta property="og:image" content="assets/profile.jpg">
+    <meta property="og:url" content="https://caishuifashenxhb.github.io/caishuifashenxiaohuoban/">
+    <meta name="theme-color" content="#1a365d">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231a365d'/%3E%3Ctext x='32' y='45' font-size='40' text-anchor='middle' fill='%23c9a227' font-family='serif'%3E%E4%BD%95%3C/text%3E%3C/svg%3E">
+    <link rel="canonical" href="https://caishuifashenxhb.github.io/caishuifashenxiaohuoban/">
+    <style id="delivery-shared">
+/* ===== 上线交付共用补丁：视觉不变，仅补容错 / 无障碍 / 兜底 ===== */
+body { font-family: 'Noto Sans SC', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+.nav-logo, .hero-title, .section-title, .footer-logo, .contact-title,
+.article-title, .service-title, .timeline-title { font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif; }
+.projects-table-wrap { max-width: 100%; -webkit-overflow-scrolling: touch; }
+.contact-link { color: inherit; text-decoration: none; border-bottom: 1px dashed transparent; transition: color var(--transition-fast), border-color var(--transition-fast); }
+.contact-link:hover, .contact-link:focus-visible { color: var(--color-primary); border-bottom-color: var(--color-accent); }
+.footer-social-link.is-static { cursor: default; opacity: .75; }
+.footer-social-link.is-static:hover { background: rgba(255,255,255,.1); color: var(--color-white); }
+.img-fallback { display: flex; align-items: center; justify-content: center; color: var(--color-primary); font-family: 'Noto Serif SC', 'Songti SC', 'STSong', serif; font-weight: 600; user-select: none; }
+.img-fallback-avatar { width: 100%; aspect-ratio: 4/5; border-radius: 8px; box-shadow: var(--shadow-xl); font-size: 96px; color: #fff; background: linear-gradient(135deg, var(--color-primary), var(--color-hero-mid, #365985)); }
+.img-fallback-cover { width: 100%; height: 200px; font-size: 20px; letter-spacing: .12em; background: linear-gradient(135deg, #e8edf4, #d3dfec); }
+/* 资质标签 / 代表项目表格 / 阅读全文链接：与母版附加样式一致，保证重建后不丢失 */
+.cred-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 26px; }
+.cred-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--color-bg-alt); color: var(--color-primary); border: 1px solid var(--color-border); padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+.cred-chip svg { width: 15px; height: 15px; }
+.projects-table-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: 12px; box-shadow: var(--shadow-sm); background: var(--color-white); }
+.projects-table { width: 100%; border-collapse: collapse; min-width: 880px; font-size: 14.5px; }
+.projects-table thead th { background: var(--color-primary); color: #fff; text-align: left; padding: 14px 16px; font-weight: 600; white-space: nowrap; }
+.projects-table tbody td { padding: 13px 16px; border-top: 1px solid var(--color-border); color: var(--color-text); vertical-align: top; line-height: 1.7; }
+.projects-table tbody tr:nth-child(even) { background: var(--color-bg-alt); }
+.projects-table .col-idx { width: 46px; text-align: center; color: var(--color-text-secondary); font-weight: 600; }
+.projects-table .col-role { white-space: nowrap; color: var(--color-primary); font-weight: 500; }
+.projects-table tbody tr:hover { background: #eef2f7; }
+.article-read-link { display: inline-block; margin-top: 14px; color: var(--color-primary); font-size: 13px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--color-accent); padding-bottom: 2px; }
+.article-read-link:hover { color: var(--color-accent); }
+@media print { .fade-in { opacity: 1 !important; transform: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .scroll-indicator { animation: none; }
+  .fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+    </style>
+    <script id="fallback-js">
+    /* 图片缺失兜底：放在 head，确保 body 内 onerror 触发时函数已存在 */
+    function imgFallback(img) {
+      if (!img || img.dataset.fbDone) return;
+      img.dataset.fbDone = '1';
+      var isAvatar = img.classList.contains('about-image');
+      var box = document.createElement('div');
+      box.className = 'img-fallback ' + (isAvatar ? 'img-fallback-avatar' : 'img-fallback-cover');
+      var card = img.closest ? img.closest('.article-card') : null;
+      var cat = card && card.querySelector('.article-category');
+      box.textContent = isAvatar ? '何' : (cat ? cat.textContent.trim() : '文章配图');
+      box.setAttribute('role', 'img');
+      box.setAttribute('aria-label', box.textContent + '（占位图）');
+      if (img.parentNode) img.parentNode.replaceChild(box, img);
+    }
+    window.imgFallback = imgFallback;
+    </script>
+    <noscript><style>.fade-in{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+<body>
+<div id="page-root"><nav class="nav" id="nav"><div class="container nav-inner"><a href="#hero" class="nav-logo"><span>何文辉</span></a><ul class="nav-links"><li><a href="#hero" class="nav-link active"><span>首页</span></a></li><li><a href="#about" class="nav-link"><span>关于</span></a></li><li><a href="#services" class="nav-link"><span>专业领域</span></a></li><li><a href="#articles" class="nav-link"><span>分享文章</span></a></li><li><a href="#timeline" class="nav-link"><span>工作经历</span></a></li><li><a href="#projects" class="nav-link"><span>代表项目</span></a></li><li><a href="#contact" class="nav-link"><span>联系我们</span></a></li></ul><button class="nav-menu-btn" id="menuBtn" aria-label="打开菜单" aria-expanded="false"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16"></path>
+  <path d="M4 12h16"></path>
+  <path d="M4 19h16"></path></svg></button></div></nav><div class="mobile-menu" id="mobileMenu"><ul class="mobile-menu-links"><li><a href="#hero" class="mobile-menu-link"><span>首页</span></a></li><li><a href="#about" class="mobile-menu-link"><span>关于</span></a></li><li><a href="#services" class="mobile-menu-link"><span>专业领域</span></a></li><li><a href="#articles" class="mobile-menu-link"><span>分享文章</span></a></li><li><a href="#timeline" class="mobile-menu-link"><span>工作经历</span></a></li><li><a href="#projects" class="mobile-menu-link"><span>代表项目</span></a></li><li><a href="#contact" class="mobile-menu-link"><span>联系我们</span></a></li></ul></div><section class="hero" id="hero"><div class="hero-pattern"></div><div class="hero-content"><div class="hero-badge"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+  <rect width="20" height="14" x="2" y="6" rx="2"></rect></svg><span>财税审计专业人士 · 项目经理</span></div><h1 class="hero-title"><span>何文辉</span></h1><p class="hero-subtitle"><span>资深财税审计专业人士 | 中审众环会计师事务所贵州分所 项目经理 · 注册会计师 / 税务师 / 律师</span></p><p class="hero-desc"><span>14 年深耕大型央国企财务管理与事务所审计鉴证领域，曾在大型央企任职财务管理工作 11 年并积累了 5 年海外项目财税实战经验；持有注册会计师执业证书、税务师职业资格证书、律师执业证，并具中级会计师职称，会计学本科（中南林业科技大学）。现就职于国内大型会计师事务所——中审众环会计师事务所贵州分所，专注上市公司年报审计、国有大型企业年报专项审计、财政厅绩效评价及水利移民、高速公路、公用事业、能源、交通养护、房地产、金融担保等多领域审计与鉴证服务。</span></p><div class="hero-buttons"><a href="#articles" class="btn btn-primary"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v16"></path>
+  <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"></path></svg><span>阅读分享</span></a><a href="#contact" class="btn btn-secondary"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg><span>联系我</span></a></div></div><div class="scroll-indicator"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></div></section><section class="section about" id="about"><div class="container"><div class="about-grid"><div class="about-content fade-in"><span class="section-label"><span>关于我</span></span><h2 class="section-title"><span>专业筑基，经验铸魂</span></h2><p class="about-text"><span>拥有 14 年财税审计专业工作经验，兼具大型央国企财务全流程管控与事务所审计鉴证双重背景。其中 11 年深耕大型央企——中铁五局集团机械化工程有限责任公司，任项目公司财务部门负责人，主导财务全流程管理、经营分析与预决算管理，期间积累了 5 年海外项目财税实务经验；现就职于国内大型会计师事务所——中审众环会计师事务所贵州分所，任项目经理，聚焦上市公司年报审计、国有大型企业年报专项审计、财政厅绩效评价及水利移民、高速公路、公用事业、能源、交通养护、房地产、金融担保等多领域审计与鉴证服务。</span></p><p class="about-text"><span>秉持"专业、严谨、务实"的执业理念，以独立、客观的视角输出高质量的审计与咨询服务。期待与同行、客户共同成长，以专业为客户创造长期价值。</span></p><div class="cred-chips"><span class="cred-chip"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+  <circle cx="12" cy="8" r="6"></circle></svg><span>注册会计师（CPA）</span></span><span class="cred-chip"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+  <circle cx="12" cy="8" r="6"></circle></svg><span>税务师</span></span><span class="cred-chip"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"></path>
+  <path d="M11 12 5.12 2.2"></path>
+  <path d="m13 12 5.88-9.8"></path>
+  <path d="M8 7h8"></path>
+  <circle cx="12" cy="17" r="5"></circle>
+  <path d="M12 18v-2h-.5"></path></svg><span>律师</span></span><span class="cred-chip"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"></path>
+  <path d="M11 12 5.12 2.2"></path>
+  <path d="m13 12 5.88-9.8"></path>
+  <path d="M8 7h8"></path>
+  <circle cx="12" cy="17" r="5"></circle>
+  <path d="M12 18v-2h-.5"></path></svg><span>中级会计师</span></span><span class="cred-chip"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path>
+  <path d="M22 10v6"></path>
+  <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg><span>会计学 · 中南林业科技大学（本科）</span></span></div><div class="about-stats"><div class="stat-item"><div class="stat-number"><span>14</span><small style="font-size:14px;"><span>年</span></small></div><div class="stat-label"><span>专业工龄</span></div></div><div class="stat-item"><div class="stat-number"><span>11</span><small style="font-size:14px;"><span>年</span></small></div><div class="stat-label"><span>央企财务管理</span></div></div><div class="stat-item"><div class="stat-number"><span>5</span><small style="font-size:14px;"><span>年</span></small></div><div class="stat-label"><span>海外财税实务</span></div></div></div></div><div class="about-image-wrapper fade-in fade-in-delay-2"><img src="assets/profile.jpg" alt="何文辉" class="about-image" width="921" height="1290" onerror="imgFallback(this)" loading="lazy"><div class="about-image-decoration"></div></div></div></div></section><section class="section services" id="services"><div class="container"><div class="section-header fade-in"><span class="section-label"><span>专业领域</span></span><h2 class="section-title"><span>深耕细作，专注价值</span></h2><p class="section-desc"><span>涵盖财税法务全链条的专业服务，为企业及个人提供一站式解决方案</span></p></div><div class="services-grid"><div class="service-card fade-in fade-in-delay-1"><div class="service-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+  <path d="m19 9-5 5-4-4-3 3"></path></svg></div><h3 class="service-title"><span>财务管理与经营分析</span></h3><p class="service-desc"><span>主导大型央企财务全流程管理，覆盖预算编制、成本管控、经营分析、决算审核等关键环节，为管理层提供高质量财务决策支持。</span></p></div><div class="service-card fade-in fade-in-delay-2"><div class="service-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <circle cx="11.5" cy="14.5" r="2.5"></circle>
+  <path d="M13.3 16.3 15 18"></path></svg></div><h3 class="service-title"><span>上市公司年报审计</span></h3><p class="service-desc"><span>为上市公司提供年度财务报告审计服务，严格执行审计准则与监管要求，深入识别财务报告风险，确保披露的真实、准确与完整。</span></p></div><div class="service-card fade-in fade-in-delay-3"><div class="service-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+  <path d="m9 12 2 2 4-4"></path></svg></div><h3 class="service-title"><span>国有大型企业专项审计与财政绩效评价</span></h3><p class="service-desc"><span>承接国有大型企业年报专项审计与财政厅绩效评价项目，深度服务贵州省财政厅、生态环境厅、发改委、生态移民局等政府部门，覆盖燃气水务、水利建设等领域，以独立客观的视角评估财政资金使用效益，多项建议获省发改委、生态移民局采纳并入选省级典型案例。</span></p></div><div class="service-card fade-in fade-in-delay-4"><div class="service-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle>
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+  <path d="M2 12h20"></path></svg></div><h3 class="service-title"><span>海外项目财税咨询</span></h3><p class="service-desc"><span>依托 5 年海外项目财税实务经验，提供跨境税务规划、境外项目财税管控、海外资金管理与风险防控等咨询服务。</span></p></div><div class="service-card fade-in fade-in-delay-1"><div class="service-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+  <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+  <path d="m9 15 2 2 4-4"></path></svg></div><h3 class="service-title"><span>全类型审计与验资</span></h3><p class="service-desc"><span>承接竣工决算审计、年报审计、验资、国有资本收益核查、专项资金审计、经济责任审计、破产清算清查等全类型项目，担任审计项目经理/负责人，所提审计调整及管理建议均获委托方采纳。</span></p></div><div class="service-card fade-in fade-in-delay-2"><div class="service-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path>
+  <path d="M18 17V9"></path>
+  <path d="M13 17V5"></path>
+  <path d="M8 17v-3"></path></svg></div><h3 class="service-title"><span>绩效评价与预算评审</span></h3><p class="service-desc"><span>承接财政厅及政府部门绩效评价、预算评审与国有资本收益核查，覆盖水利移民、高速公路、公用事业、能源、交通养护、房地产、金融担保等多领域，评价资金效益、识别预算与绩效目标问题并提优化建议。</span></p></div></div></div></section><section class="section articles" id="articles"><div class="container"><div class="section-header fade-in"><span class="section-label"><span>分享文章</span></span><h2 class="section-title"><span>专业洞察，深度分享</span></h2><p class="section-desc"><span>记录工作中的思考与总结，与同行交流探讨，共同进步</span></p></div><div class="articles-grid"><article class="article-card fade-in fade-in-delay-1"><div class="article-image-wrapper"><img src="assets/article-1.jpg" alt="税务筹划" class="article-image" width="600" height="400" onerror="imgFallback(this)" loading="lazy"></div><div class="article-content"><span class="article-category"><span>税务筹划</span></span><h3 class="article-title"><span>跨境并购中的税务架构设计要点</span></h3><p class="article-excerpt"><span>在跨境并购交易中，税务架构设计是决定交易成败的关键因素之一。本文将从控股架构、融资架构、退出路径三个维度，分享实操中的核心要点与常见陷阱。</span></p><div class="article-meta"><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"></path>
+  <path d="M16 2v3"></path>
+  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+  <path d="M3 9h18"></path></svg><span>2026年6月</span></span><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle>
+  <path d="M12 6v6l4 2"></path></svg><span>8 分钟阅读</span></span></div></div></article><article class="article-card fade-in fade-in-delay-2"><div class="article-image-wrapper"><img src="assets/article-2.jpg" alt="审计实践" class="article-image" width="600" height="400" onerror="imgFallback(this)" loading="lazy"></div><div class="article-content"><span class="article-category"><span>审计实践</span></span><h3 class="article-title"><span>IPO审计中财务合规的五大关注点</span></h3><p class="article-excerpt"><span>IPO过程中，财务合规是最核心的审核要点。本文结合近期案例，梳理收入确认、成本核算、关联交易、内部控制、股份支付五大关键领域的审核重点。</span></p><div class="article-meta"><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"></path>
+  <path d="M16 2v3"></path>
+  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+  <path d="M3 9h18"></path></svg><span>2026年5月</span></span><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle>
+  <path d="M12 6v6l4 2"></path></svg><span>12 分钟阅读</span></span></div></div></article><article class="article-card fade-in fade-in-delay-3"><div class="article-image-wrapper"><img src="assets/article-3.jpg" alt="法务合规" class="article-image" width="600" height="400" onerror="imgFallback(this)" loading="lazy"></div><div class="article-content"><span class="article-category"><span>法务合规</span></span><h3 class="article-title"><span>企业数据合规体系建设实践指南</span></h3><p class="article-excerpt"><span>随着《数据安全法》《个人信息保护法》的实施，企业数据合规成为刚需。本文从合规框架、风险评估、制度建设、持续监督四个层面，提供实操性指导。</span></p><div class="article-meta"><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"></path>
+  <path d="M16 2v3"></path>
+  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+  <path d="M3 9h18"></path></svg><span>2026年4月</span></span><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle>
+  <path d="M12 6v6l4 2"></path></svg><span>10 分钟阅读</span></span></div></div></article><article class="article-card fade-in fade-in-delay-1"><div class="article-image-wrapper"><img src="assets/article-4.jpg" alt="施工企业物资管理" class="article-image" width="600" height="400" onerror="imgFallback(this)" loading="lazy"></div><div class="article-content"><span class="article-category"><span>学术论文</span></span><h3 class="article-title"><span>基于价值链整合的施工企业物资集约化管理研究</span></h3><p class="article-excerpt"><span>本文针对建筑施工企业在面临激烈市场竞争、资源价格上涨以及物资成本控制难题的背景下，探讨了基于价值链整合的物资集约化管理策略。通过对物资计划、采购、配置、使用和回收处理全过程的优化，本文提出了集约化管理框架，旨在提升物…</span></p><div class="article-meta"><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"></path>
+  <path d="M16 2v3"></path>
+  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+  <path d="M3 9h18"></path></svg><span>2026年11月收录</span></span><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle>
+  <path d="M12 6v6l4 2"></path></svg><span>约 11 分钟</span></span></div><a class="article-read-link" href="papers/paper-1.html">阅读全文 →</a></div></article><article class="article-card fade-in fade-in-delay-2"><div class="article-image-wrapper"><img src="assets/article-5.jpg" alt="财务共享与资金预算" class="article-image" width="600" height="400" onerror="imgFallback(this)" loading="lazy"></div><div class="article-content"><span class="article-category"><span>学术论文</span></span><h3 class="article-title"><span>财务共享模式下的建筑施工企业资金预算管理</span></h3><p class="article-excerpt"><span>本文围绕财务共享模式下建筑施工企业资金预算管理的优化措施展开探讨。财务共享中心作为统一平台，优化了预算管理流程，提高了数据质量，降低了财务成本，尤其在建筑行业，财务共享模式显著提升了预算管理的透明度和执行效率。预算目…</span></p><div class="article-meta"><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"></path>
+  <path d="M16 2v3"></path>
+  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+  <path d="M3 9h18"></path></svg><span>2026年11月收录</span></span><span class="article-meta-item"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle>
+  <path d="M12 6v6l4 2"></path></svg><span>约 11 分钟</span></span></div><a class="article-read-link" href="papers/paper-2.html">阅读全文 →</a></div></article></div><div class="articles-more fade-in"><a href="#hero" class="btn btn-primary"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"></rect>
+  <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path>
+  <path d="M10 12h4"></path></svg><span>回到顶部</span></a></div></div></section><section class="section timeline-section" id="timeline"><div class="container"><div class="section-header fade-in"><span class="section-label"><span>工作经历</span></span><h2 class="section-title"><span>十四年深耕，步履不停</span></h2><p class="section-desc"><span>从央企财务到事务所审计，每一段经历都是扎实的沉淀，构筑了今天的专业底气</span></p></div><div class="timeline"><div class="timeline-item fade-in"><div class="timeline-dot"></div><div class="timeline-content"><span class="timeline-year"><span>2024 - 至今</span></span><h3 class="timeline-title"><span>项目经理</span></h3><p class="timeline-company"><span>中审众环会计师事务所贵州分所（国内大型会计师事务所）</span></p><p class="timeline-desc"><span>自 2024 年起任中审众环会计师事务所贵州分所项目经理，负责上市公司、国有企业、政府部门的审计及绩效评价工作，成功完成贵州省财政厅、生态环境厅、发改委、生态移民局等单位绩效评价，以及燃气水务、水利建设等领域年报审计与验资项目，覆盖审计方案制定、底稿编制、报告出具与沟通协调全流程。</span></p></div></div><div class="timeline-item fade-in fade-in-delay-1"><div class="timeline-dot"></div><div class="timeline-content"><span class="timeline-year"><span>2012 - 2023（11 年）</span></span><h3 class="timeline-title"><span>财务管理者 / 项目公司财务部门负责人</span></h3><p class="timeline-company"><span>中铁五局集团机械化工程有限责任公司（大型央企）</span></p><p class="timeline-desc"><span>在大型央企任职 11 年，任中铁五局集团机械化工程有限责任公司项目公司财务部门负责人，主导财务全流程管控、经营分析与预决算管理，负责账务处理、工资奖金核算、费用报销、会计报表编制、费用与资金预算、税务筹划及往来核对，参与多个海内外重大项目财税管理，业务能力获领导与同事高度评价。</span></p></div></div><div class="timeline-item fade-in fade-in-delay-2"><div class="timeline-dot"></div><div class="timeline-content"><span class="timeline-year"><span>5 年亮点 · 任职期间</span></span><h3 class="timeline-title"><span>海外项目财税实务</span></h3><p class="timeline-company"><span>涉外项目财税管理</span></p><p class="timeline-desc"><span>在央企任职期间，深度参与海外项目财税工作 5 年，主导跨境税务规划、境外资金管理、海外项目财税风险防控以及与境外税务机关的沟通协调，积累了丰富的海外财税实战经验。</span></p></div></div></div></div></section><section class="section projects" id="projects"><div class="container"><div class="section-header fade-in"><span class="section-label"><span>代表项目</span></span><h2 class="section-title"><span>典型项目业绩一览</span></h2><p class="section-desc"><span>具备水利移民、高速公路、公用事业、能源、交通养护、房地产、金融担保等多领域审计与绩效评价经验，担任审计项目经理/负责人，主持完成竣工决算审计、年报审计、验资、国有资本收益核查、预算评审、专项资金审计、经济责任审计、破产清算清查等全类型项目，所提审计调整及管理建议均获委托方采纳。</span></p></div><div class="projects-table-wrap fade-in"><table class="projects-table"><thead><tr><th class="col-idx"><span>序号</span></th><th><span>项目类别</span></th><th><span>项目名称</span></th><th><span>担任角色</span></th><th><span>主要工作与成果</span></th></tr></thead><tbody><tr class=""><td class="col-idx"><span class="row-num">1</span></td><td><span>高速公路工程审计</span></td><td><span>三都至荔波高速公路工程竣工决算审计</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>全面审计建设资金、工程造价结算、财务收支及竣工决算，揭示变更签证与资金监管问题并提出整改建议。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">2</span></td><td><span>财政绩效评价</span></td><td><span>贵州省生态移民局 2022-2023 年度绩效评价；贵州省发改委 2023 年度国家重大水利工程基金绩效评价</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>评价资金效益，识别预算与绩效目标问题并提优化建议（同类项目入选 2024 年省绩效评价典型案例，建议获省发改委、生态移民局采纳）。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">3</span></td><td><span>公用事业年报审计</span></td><td><span>贵州燃气集团重要子公司 2024-2025 年报审计</span></td><td class="col-role"><span>项目负责人</span></td><td><span>执行年报审计并编制合并报表，向国资委汇报财务状况，出具管理建议书。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">4</span></td><td><span>上市公司验资</span></td><td><span>深圳劲嘉集团股份有限公司 2026 年减资验资</span></td><td class="col-role"><span>审计负责人</span></td><td><span>审验注册资本实收、股东出资及股本减少，出具验资报告保障资本真实性与股东权益。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">5</span></td><td><span>国有资本收益核查</span></td><td><span>2024 年贵州省 26 家国企国有资本收益核查</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>核查国有资本收益申报基数、应交利润及上缴合规性，披露欠缴问题并提管理建议。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">6</span></td><td><span>预算评审</span></td><td><span>贵州省体育宣传 2025 年工作经费预算评审</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>评审预算编制依据、支出结构及测算标准，核减不合理支出并提预算刚性约束建议。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">7</span></td><td><span>交通养护专项资金审计</span></td><td><span>遵义公路管理局 2023-2024 年交通养护专项资金审计</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>审计养护资金拨付使用、工程实施及绩效，排查挤占挪用风险并提监管建议。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">8</span></td><td><span>离任经济责任审计</span></td><td><span>交通运输综合行政执法一支队原党委书记罗卫华离任经责审计</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>审计任职期间财政财务收支、重大决策、资产管理及廉洁从业，客观评价经济责任履行。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">9</span></td><td><span>能源勘探费用专项审计</span></td><td><span>贵宸清洁能源金佳、土城、响水矿区勘探费用专项审计</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>审计三矿区勘探费用真实性合规性，规范资本化与费用化划分及矿区分配。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">10</span></td><td><span>股权划转专项审计</span></td><td><span>贵州德尔房地产开发有限公司股权划转日经营管理评价</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>评价划转基准日资产负债、经营成果及合规性，保障国资权益与股权划转依法合规。</span></td></tr><tr class=""><td class="col-idx"><span class="row-num">11</span></td><td><span>破产清算清查专项审计</span></td><td><span>贵州省众维中小企业信用担保有限公司破产改革清查</span></td><td class="col-role"><span>审计项目经理</span></td><td><span>清查资产负债、担保风险敞口及代偿回收，为破产程序推进提供专业支持。</span></td></tr></tbody></table></div></div></section><section class="section contact" id="contact"><div class="container"><div class="contact-grid"><div class="contact-info fade-in"><h2 class="contact-title"><span>期待与您交流</span></h2><p class="contact-desc"><span>无论是业务咨询还是专业交流，都欢迎通过以下方式与我取得联系。我将尽快回复您的消息。</span></p><ul class="contact-list"><li class="contact-item"><div class="contact-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+  <rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></div><div><div class="contact-item-title"><span>电子邮箱</span></div><div class="contact-item-value"><a class="contact-link" href="mailto:1113996987@qq.com"><a href="mailto:1113996987@qq.com" class="contact-link">1113996987@qq.com</a></a></div></div></li><li class="contact-item"><div class="contact-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></div><div><div class="contact-item-title"><span>联系电话</span></div><div class="contact-item-value"><a class="contact-link" href="tel:18185818172"><span>181****8172</span></a></div></div></li><li class="contact-item"><div class="contact-icon"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+  <circle cx="12" cy="10" r="3"></circle></svg></div><div><div class="contact-item-title"><span>所在城市</span></div><div class="contact-item-value"><span>贵州省贵阳市</span></div></div></li></ul></div><div class="contact-form fade-in fade-in-delay-2"><form id="contactForm" action="https://formspree.io/f/REPLACE_ME" method="POST"><div class="form-group"><label class="form-label" for="fld_0"><span>您的姓名</span></label><input type="text" id="fld_0" name="fld_0" placeholder="请输入您的姓名" required="" class="form-input"></div><div class="form-group"><label class="form-label" for="fld_1"><span>电子邮箱</span></label><input type="email" id="fld_1" name="fld_1" placeholder="请输入您的邮箱" required="" class="form-input"></div><div class="form-group"><label class="form-label" for="fld_2"><span>咨询主题</span></label><input type="text" id="fld_2" name="fld_2" placeholder="请简要描述您的咨询主题" class="form-input"></div><div class="form-group"><label class="form-label" for="fld_3"><span>留言内容</span></label><textarea id="fld_3" name="fld_3" placeholder="请详细描述您的需求或问题..." required="" class="form-textarea"></textarea></div><button type="submit" class="btn btn-primary form-submit"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path>
+  <path d="m21.854 2.147-10.94 10.939"></path></svg><span>发送消息</span></button></form></div></div></div></section><footer class="footer"><div class="container"><div class="footer-top"><div class="footer-logo"><span>何文辉</span></div><div class="footer-social"><span role="img" class="footer-social-link is-static" aria-label="微信"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg></span><a href="mailto:1113996987@qq.com" class="footer-social-link" aria-label="邮箱"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+  <rect x="2" y="4" width="20" height="16" rx="2"></rect></svg></a><span role="img" class="footer-social-link is-static" aria-label="LinkedIn"><svg class="lucide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+  <rect width="4" height="12" x="2" y="9"></rect>
+  <circle cx="4" cy="4" r="2"></circle></svg></span></div></div><div class="footer-bottom"><p><span>© 2026 何文辉. 保留所有权利. | 财税审计法务专业分享</span></p></div></div></footer></div>
+
+
+<script id="core-js">
+var ICONS = {"menu": "<path d=\"M4 5h16\" />\n  <path d=\"M4 12h16\" />\n  <path d=\"M4 19h16\" />", "x": "<path d=\"M18 6 6 18\" />\n  <path d=\"m6 6 12 12\" />", "loader": "<path d=\"M12 2v4\" />\n  <path d=\"m16.2 7.8 2.9-2.9\" />\n  <path d=\"M18 12h4\" />\n  <path d=\"m16.2 16.2 2.9 2.9\" />\n  <path d=\"M12 18v4\" />\n  <path d=\"m4.9 19.1 2.9-2.9\" />\n  <path d=\"M2 12h4\" />\n  <path d=\"m4.9 4.9 2.9 2.9\" />", "check": "<path d=\"M20 6 9 17l-5-5\" />", "link": "<path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\" />\n  <path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\" />"};
+
+function icon(name, size, cls) {
+    size = size || 24;
+    var body = ICONS[name] || ICONS['link'] || '';
+    return '<svg class="lucide ' + (cls || '') + '" xmlns="http://www.w3.org/2000/svg" width="' + size +
+        '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + body + '</svg>';
+}
+function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+}
+
+</script>
+
+<script id="runtime-js">
+/* ===== 页面交互层（静态交付版：无编辑态、无动态重渲染） =====
+   【需替换】把下面的表单占位符换成真实 Formspree 表单 ID，
+             并同步修改 HTML 中 <form id="contactForm" action="...">。 */
+const CONTACT_ENDPOINT = 'https://formspree.io/f/REPLACE_ME';
+
+function initPageInteractions() {
+    if (window.__pageInitDone) return;
+    window.__pageInitDone = true;
+
+    var nav = document.getElementById('nav');
+    window.addEventListener('scroll', function () {
+        if (!nav || !nav.isConnected) nav = document.getElementById('nav');
+        if (!nav) return;
+        nav.classList.toggle('scrolled', window.scrollY > 50);
+        var current = '';
+        document.querySelectorAll('section[id]').forEach(function (s) {
+            if (window.scrollY >= s.offsetTop - 100) current = s.id;
+        });
+        document.querySelectorAll('.nav-link').forEach(function (l) {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+        });
+    }, { passive: true });
+
+    var menuBtn = document.getElementById('menuBtn');
+    if (menuBtn && !menuBtn.hasAttribute('aria-expanded')) menuBtn.setAttribute('aria-expanded', 'false');
+
+    function setMobileMenu(open) {
+        var menu = document.getElementById('mobileMenu');
+        if (!menu || !menuBtn) return;
+        menu.classList.toggle('active', open);
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menuBtn.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+        menuBtn.innerHTML = icon(open ? 'x' : 'menu', 24);
+        document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t || !t.closest) return;
+        var isEditing = false;
+
+        var btn = t.closest('#menuBtn');
+        if (btn && !isEditing) {
+            var menu = document.getElementById('mobileMenu');
+            setMobileMenu(!menu || !menu.classList.contains('active'));
+            return;
+        }
+        var mobileLink = t.closest('.mobile-menu-link');
+        if (mobileLink && !isEditing) {
+            setMobileMenu(false);
+        }
+        var anchor = t.closest('a[href^="#"]');
+        if (anchor && !isEditing) {
+            var href = anchor.getAttribute('href');
+            if (!href || href === '#' || href.length < 2) return;
+            var target = null;
+            try { target = document.querySelector(href); } catch (err) { target = null; }
+            if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setMobileMenu(false);
+    });
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) setMobileMenu(false);
+    });
+
+    document.addEventListener('submit', function (e) {
+        if (!e.target || e.target.id !== 'contactForm') return;
+        e.preventDefault();
+        var form = e.target;
+        var btn = form.querySelector('button[type="submit"]');
+        if (!btn) return;
+        form.action = CONTACT_ENDPOINT;
+        var original = btn.innerHTML;
+        btn.innerHTML = icon('loader', 18, 'animate-spin') + ' 发送中...';
+        btn.disabled = true;
+        var settled = false;
+        function finish(ok, text) {
+            if (settled) return;
+            settled = true;
+            btn.innerHTML = icon(ok ? 'check' : 'x', 18) + ' ' + text;
+            btn.style.background = ok ? '#10b981' : '#e53e3e';
+            setTimeout(function () {
+                if (ok) form.reset();
+                btn.innerHTML = original;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 2000);
+        }
+        var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 2800);
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+            signal: ctrl ? ctrl.signal : undefined
+        }).then(function (r) {
+            clearTimeout(timer);
+            finish(!!r.ok, r.ok ? '发送成功' : '发送失败，请重试');
+        }).catch(function () {
+            clearTimeout(timer);
+            finish(false, '发送失败，请重试');
+        });
+    });
+
+    if (window.IntersectionObserver) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (en.isIntersecting) { en.target.classList.add('visible'); observer.unobserve(en.target); }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        var root = document.getElementById('page-root') || document.body;
+        function observeFades() {
+            root.querySelectorAll('.fade-in:not(.visible)').forEach(function (el) { observer.observe(el); });
+        }
+        observeFades();
+    } else {
+        document.querySelectorAll('.fade-in').forEach(function (el) { el.classList.add('visible'); });
+    }
+}
+
+</script>
+
+
+
+<script>initPageInteractions();</script></body></html>

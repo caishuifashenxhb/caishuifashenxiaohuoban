@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 部署前把 https://caishuifashenxhb.github.io/caishuifashenxiaohuoban 替换为真实域名；若部署在子目录，loc 需写为 https://<域名>/<子目录>/ -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://caishuifashenxhb.github.io/caishuifashenxiaohuoban/</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
